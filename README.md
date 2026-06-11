@@ -64,6 +64,38 @@ Estimated results:
 
 The method shows stable convergence and accurate parameter recovery.
 
+##  PSO vs Genetic Algorithm (Performance Comparison)
+
+The project now includes two optimization methods for solving the inverse PDE problem:
+
+###  Methods Used
+
+- Genetic Algorithm (GA)
+- Particle Swarm Optimization (PSO)
+
+---
+
+###  Performance Results
+
+| Method | Mean Error (v) | Mean Error (D) | Stability |
+|--------|----------------|----------------|-----------|
+| GA     | ~0.0236        | ~0.0020        | Moderate  |
+| PSO    | ~0.0075        | ~0.00026       | High      |
+
+---
+
+###  Key Observation
+
+- PSO shows significantly faster convergence.
+- PSO provides more stable parameter estimation.
+- GA is still useful as a baseline stochastic method.
+
+---
+
+###  Conclusion
+
+The comparison demonstrates that PSO outperforms the Genetic Algorithm in accuracy and stability for inverse PDE parameter estimation problems.
+
 ---
 
 ## Project Structure
