@@ -2,6 +2,7 @@ import numpy as np
 
 from src.pde.solver import solve_pde
 from src.inverse.optimizer import optimize
+from src.inverse.pso_optimizer import optimize_pso
 
 
 print("?? PROGRAM STARTED")
@@ -45,6 +46,7 @@ def run_single_experiment(i):
     print("   ?? Optimizing...")
 
     v_est, D_est = optimize(u_obs, x, dx, dt, Nt)
+    v_est, D_est = optimize_pso(u_obs, x, dx, dt, Nt)
 
     print("   ? Done")
 
