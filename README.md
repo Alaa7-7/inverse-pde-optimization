@@ -1,7 +1,7 @@
 #  Inverse PDE Optimization System
 
 ##  Overview
-This project implements a numerical framework for solving inverse problems in the one-dimensional advection-diffusion equation using a Genetic Algorithm.
+This project implements a numerical model for solving inverse problems in the one-dimensional advection-diffusion equation using a Genetic Algorithm.
 
 The goal is to estimate unknown physical parameters (advection velocity and diffusion coefficient) from observed data.
 
@@ -24,11 +24,15 @@ Where:
 
 ##  Objective
 
-We aim to solve the inverse problem:
+The objective is to solve:
 
 \[
 \min_{v, D} \; \| u_{sim}(v,D) - u_{obs} \|_2^2
 \]
+
+Where:
+- *u_{sim}*: solution from numerical PDE solver
+- *u_{obs}*: noisy observed data
 
 ---
 
@@ -39,11 +43,27 @@ The system consists of:
 ### 1. Forward Solver
 - Finite Difference Method (FDM)
 - Explicit time stepping
+- Central difference for diffusion term
 
 ### 2. Inverse Solver
-- Genetic Algorithm optimization
-- Population-based search
-- Mutation + crossover strategy
+Two optimization methods are implemented:
+- Genetic Algorithm (GA)
+     .Population-based stochastic search
+     .Selection, crossover, mutation
+     .Constraint-based parameter bounds
+- Particle Swarm Optimization (PSO)
+     .Velocity-position update mechanism
+     .Cognitive + social learning components
+     .Improved convergence stability
+---
+### Experimental Setup
+
+ .Domain: 1D spatial grid
+ .Grid points: 80
+ .Time steps: 150
+ .Time step size: 0.0005
+ .Initial condition: Gaussian pulse
+ .Noise level: 1% Gaussian noise added to observations
 
 ---
 
@@ -53,16 +73,25 @@ True parameters:
 - v = 0.8  
 - D = 0.05  
 
-Estimated results:
+Estimated results (GA):
 
-- Mean v = 0.7804  
-- Mean D = 0.0508  
+-  v = 0.7804  
+-  D = 0.0508  
 
 ### Error Analysis:
-- v error ˜ 0.0236  
-- D error ˜ 0.0020  
+- v error |v - v_true| ˜ 0.0236  
+- D error |D - D_true| ˜ 0.0020  
 
 The method shows stable convergence and accurate parameter recovery.
+
+Estimated results (PSO):
+-  v ~ 0.79 - 0.81  
+-  D ~ 0.0499 - 0.0505  
+
+### Error Analysis:
+- v error |v - v_true| ˜ 0.0075 
+- D error |D - D_true| ˜ 0.00026
+
 
 ##  PSO vs Genetic Algorithm (Performance Comparison)
 
@@ -77,7 +106,7 @@ The project now includes two optimization methods for solving the inverse PDE pr
 
 ###  Performance Results
 
-| Method | Mean Error (v) | Mean Error (D) | Stability |
+| Method |  Error (v)     |  Error (D)     | Stability |
 |--------|----------------|----------------|-----------|
 | GA     | ~0.0236        | ~0.0020        | Moderate  |
 | PSO    | ~0.0075        | ~0.00026       | High      |
@@ -86,9 +115,10 @@ The project now includes two optimization methods for solving the inverse PDE pr
 
 ###  Key Observation
 
-- PSO shows significantly faster convergence.
+- PSO converges faster than Genetic Algorithm.
 - PSO provides more stable parameter estimation.
 - GA is still useful as a baseline stochastic method.
+- Both methods successfully recover true parameters under noisy observations
 
 ---
 
@@ -132,7 +162,7 @@ PYTHONPATH=. python experiments/run_inverse.py
 
 ## Applications
 
-This framework can be applied in a wide range of scientific and engineering domains, including:
+This model can be applied in a wide range of scientific and engineering domains, including:
 
 - Fluid dynamics and transport phenomena
 - Environmental modeling (pollution and diffusion processes)
@@ -149,5 +179,5 @@ The current implementation can be extended in several directions to improve accu
 - Extend the model to 2D and 3D partial differential equations.
 - Improve numerical stability using higher-order discretization schemes.
 - Introduce uncertainty quantification for estimated parameters.
-- Integrate physics-informed neural networks (PINNs) for hybrid modeling.
+- Integrate physics-informed neural networks for hybrid modeling.
 - Reduce computational cost using surrogate models or machine learning approximations.
