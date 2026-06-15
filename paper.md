@@ -1,15 +1,15 @@
-#  Inverse PDE Optimization using Numerical Simulation and Heuristic Algorithms
+#  Inverse PDE Optimization using Numerical Simulation
 
 ---
 
 ##  Abstract
 
-This project presents a computational framework for solving an inverse parameter estimation problem governed by the one-dimensional Advection–Diffusion equation. The goal is to recover unknown physical parameters (advection velocity and diffusion coefficient) from synthetic observations using numerical simulation and optimization techniques.
+This project presents a computational modeling for solving an inverse parameter estimation problem governed by the one-dimensional Advection–Diffusion equation. The goal is to recover unknown physical parameters (advection velocity V and diffusion coefficient D) from synthetic observations using numerical simulation and optimization techniques.
 
-The framework integrates:
+The modeling integrates:
 - Finite Difference Method (FDM) for PDE simulation
 - Synthetic data generation
-- Heuristic optimization algorithms (Genetic Algorithm, PSO-inspired methods)
+- Heuristic optimization algorithms (Genetic Algorithm GA, PSO-inspired methods)
 
 The results demonstrate accurate parameter recovery with low error, showing the effectiveness of combining numerical PDE solvers with optimization techniques.
 
@@ -17,7 +17,7 @@ The results demonstrate accurate parameter recovery with low error, showing the 
 
 ## 1. Introduction
 
-Inverse problems in partial differential equations (PDEs) aim to determine unknown parameters of a physical system from observed data. These problems are typically ill-posed and require regularization or optimization-based approaches.
+Inverse problems in partial differential equations (PDEs) aim to determine unknown parameters of a physical system from observed data. These problems are typically posed and require regularization or optimization approaches.
 
 In this work, we focus on estimating:
 
@@ -26,13 +26,13 @@ In this work, we focus on estimating:
 
 from the Advection–Diffusion system.
 
-This study provides a simplified but realistic computational framework for inverse PDE problems.
+This study provides a simplified but realistic computational modeling for inverse PDE problems.
 
 ---
 
 ## 2. Mathematical Model
 
-The governing equation is:
+The equation is:
 
 \[
 \frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x}
@@ -47,7 +47,7 @@ Where:
 
 ---
 
-## 3. Numerical Method (Forward Solver)
+## 3. Numerical Method
 
 The PDE is solved using the Finite Difference Method (FDM).
 
@@ -189,7 +189,7 @@ Limitations:
 
 ## 9. Conclusion
 
-This project demonstrates a working framework for solving inverse PDE problems using numerical simulation and optimization techniques.
+This work demonstrates a working framework for solving inverse PDE problems using numerical simulation and optimization techniques.
 
 The integration of:
 - Finite difference PDE solver
@@ -221,4 +221,4 @@ enables accurate recovery of unknown physical parameters.
 
 ##  Summary
 
-This project demonstrates that inverse problems governed by PDEs can be effectively solved using computational optimization techniques, bridging numerical simulation and intelligent search algorithms.
+This work demonstrates that inverse problems solved by PDEs can be effectively solved using computational optimization techniques, numerical simulation and intelligent search algorithms.
