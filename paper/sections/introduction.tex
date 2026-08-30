@@ -1,13 +1,17 @@
 \section{Introduction}
 
-Inverse problems for partial differential equations (PDEs) are fundamental in computational physics and engineering, where the objective is to estimate unknown physical parameters from observed data.
+Inverse problems are used to find unknown parameters from observed data.
 
-In this work, we consider the one-dimensional advection-diffusion equation, which models transport phenomena in fluid dynamics:
+In this project, I study a simple one-dimensional advection-diffusion problem. The goal is to find the advection velocity v and the diffusion coefficient D from noisy observations.
+
+The main equation used in the model is:
 
 \[
-\frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x} = D \frac{\partial^2 u}{\partial x^2}
+u_t + v u_x = D u_{xx}
 \]
 
-where $u(x,t)$ is the transported quantity, $v$ is the advection velocity, and $D$ is the diffusion coefficient.
+where u is the transported quantity, v is the advection velocity, and D is the diffusion coefficient.
 
-The main objective of this study is to recover the unknown parameters $(v, D)$ from noisy observations using an optimization-based inverse modeling approach.
+I use a numerical PDE solver and two optimization methods, Genetic Algorithm (GA) and Particle Swarm Optimization (PSO), to estimate the unknown parameters.
+
+The observations are generated from known parameters and then 1\% Gaussian noise is added.

@@ -1,19 +1,23 @@
 \section{Conclusion}
 
-This study presented a genetic algorithm-based framework for solving inverse problems in the advection-diffusion equation.
+In this project, I used a numerical PDE solver to estimate unknown parameters in a one-dimensional advection-diffusion problem.
 
-The numerical experiments demonstrate that the proposed method can successfully recover unknown physical parameters with high accuracy:
+I used two optimization methods: Genetic Algorithm (GA) and Particle Swarm Optimization (PSO).
 
-\[
-(v, D) \approx (0.7804, 0.0508)
-\]
-
-compared to the true values:
+The true parameters were:
 
 \[
-(v, D) = (0.8, 0.05)
+v = 0.8
 \]
 
-The low estimation error and stable convergence confirm the effectiveness of combining numerical PDE solvers with evolutionary optimization techniques.
+\[
+D = 0.05
+\]
 
-Future work will focus on improving convergence speed and extending the method to higher-dimensional PDE systems.
+After 3 runs, both methods gave values close to the true parameters.
+
+PSO gave a slightly better result for the velocity, while GA gave a slightly better result for the diffusion coefficient in these runs.
+
+This project shows that numerical simulation and simple optimization methods can be used to solve an inverse PDE problem.
+
+Future work can include more runs, more noise levels, higher-dimensional PDE models, and other optimization methods.

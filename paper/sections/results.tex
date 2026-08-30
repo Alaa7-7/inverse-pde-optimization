@@ -1,50 +1,83 @@
 \section{Results}
 
-The proposed method was evaluated using synthetic data generated with known ground truth parameters:
+The model was tested using synthetic data. The true parameters were:
 
 \[
-v_{true} = 0.8, \quad D_{true} = 0.05
+v_{true} = 0.8
 \]
 
-After running multiple stochastic optimization trials, the following results were obtained:
+\[
+D_{true} = 0.05
+\]
 
-\subsection{Parameter Estimation}
+The observations were generated using these values and 1\% Gaussian noise was added.
 
-\begin{itemize}
-    \item Estimated velocity (mean):
-    \[
-    v_{est} = 0.7804
-    \]
+\subsection{Genetic Algorithm Results}
 
-    \item Estimated diffusion coefficient (mean):
-    \[
-    D_{est} = 0.0508
-    \]
-\end{itemize}
+After 3 runs, the mean estimated values were:
 
-\subsection{Error Analysis}
+\[
+v_{GA} = 0.7957
+\]
 
-\begin{itemize}
-    \item Mean absolute error in velocity:
-    \[
-    E_v = 0.0236
-    \]
+\[
+D_{GA} = 0.04993
+\]
 
-    \item Mean absolute error in diffusion coefficient:
-    \[
-    E_D = 0.0020
-    \]
-\end{itemize}
+The mean errors were:
 
-\subsection{Statistical Stability}
+\[
+Error_v = 0.01499
+\]
 
-The standard deviation over multiple runs indicates stable convergence:
+\[
+Error_D = 0.000261
+\]
 
-\begin{itemize}
-    \item Std of velocity estimates: $0.0266$
-    \item Std of diffusion estimates: $0.0013$
-\end{itemize}
+\subsection{PSO Results}
 
-\subsection{Key Observation}
+After 3 runs, the mean estimated values were:
 
-The results demonstrate that the proposed genetic algorithm-based inverse solver is able to accurately recover the unknown parameters even in the presence of noise, with low estimation error and stable statistical behavior.
+\[
+v_{PSO} = 0.7977
+\]
+
+\[
+D_{PSO} = 0.04963
+\]
+
+The mean errors were:
+
+\[
+Error_v = 0.01266
+\]
+
+\[
+Error_D = 0.000365
+\]
+
+\subsection{Comparison}
+
+The results show that both methods can recover values close to the true parameters.
+
+PSO gives a slightly smaller error for the velocity v.
+
+GA gives a slightly smaller error for the diffusion coefficient D.
+
+For these 3 runs, the difference between the two methods is small.
+
+\subsection{Observation}
+
+Both GA and PSO were able to estimate the unknown parameters from noisy observations.
+
+The results are close to the true values:
+
+\[
+v = 0.8
+\]
+
+\[
+D = 0.05
+\]
+
+The results can change between runs because both optimization methods use random values.

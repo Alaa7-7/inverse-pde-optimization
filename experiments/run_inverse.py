@@ -5,12 +5,10 @@ from src.inverse.optimizer import optimize
 from src.inverse.pso_optimizer import optimize_pso
 
 
-print("?? PROGRAM STARTED")
+print("PROGRAM STARTED")
 
 
-# ======================
 # Grid setup
-# ======================
 L = 1.0
 Nx = 80
 x = np.linspace(0, L, Nx)
@@ -19,96 +17,153 @@ dx = x[1] - x[0]
 dt = 0.0005
 Nt = 150
 
+print("Grid initialized")
 
-print("?? Grid initialized")
 
-
-# ======================
 # True parameters
-# ======================
 v_true = 0.8
 D_true = 0.05
 
-print("?? True parameters set")
+print("True parameters set")
 
 
-# ======================
 # One experiment
-# ======================
 def run_single_experiment(i):
-    print(f"\n?? Running experiment {i}")
+
+    print("\nRunning experiment", i)
 
     u_obs = solve_pde(v_true, D_true, x, dx, dt, Nt)
 
-    # add noise
+    # add 1% noise
     u_obs = u_obs + 0.01 * np.random.randn(len(u_obs))
 
-    print("   ?? Optimizing...")
+    print("Running GA...")
 
-    v_est, D_est = optimize(u_obs, x, dx, dt, Nt)
-    v_est, D_est = optimize_pso(u_obs, x, dx, dt, Nt)
+    v_ga, D_ga = optimize(
+        u_obs, x, dx, dt, Nt
+    )
 
-    print("   ? Done")
+    print("Running PSO...")
 
-    return v_est, D_est
+    v_pso, D_pso = optimize_pso(
+        u_obs, x, dx, dt, Nt
+    )
+
+    print("Experiment finished")
+
+    return v_ga, D_ga, v_pso, D_pso
 
 
-# ======================
-# Multiple runs (small for debugging)
-# ======================
-runs = 3   # IMPORTANT: small for testing
+# Multiple runs
+runs = 3
 
-v_errors = []
-D_errors = []
+ga_v_estimates = []
+ga_D_estimates = []
 
-v_estimates = []
-D_estimates = []
+pso_v_estimates = []
+pso_D_estimates = []
 
-print("\n?? STARTING LOOP...\n")
+
+print("\nSTARTING EXPERIMENTS\n")
+
 
 for i in range(runs):
-    v_est, D_est = run_single_experiment(i)
 
-    v_estimates.append(v_est)
-    D_estimates.append(D_est)
+    v_ga, D_ga, v_pso, D_pso = run_single_experiment(i)
 
-    v_errors.append(abs(v_est - v_true))
-    D_errors.append(abs(D_est - D_true))
+    ga_v_estimates.append(v_ga)
+    ga_D_estimates.append(D_ga)
 
-
-# ======================
-# Results
-# ======================
-print("\n========== FINAL RESULTS ==========")
-
-print("True v:", v_true)
-print("True D:", D_true)
-
-print("\n--- Estimates ---")
-print("Mean v:", np.mean(v_estimates))
-print("Mean D:", np.mean(D_estimates))
-
-print("\n--- Errors ---")
-print("Mean error v:", np.mean(v_errors))
-print("Mean error D:", np.mean(D_errors))
-print("Std v:", np.std(v_errors))
-print("Std D:", np.std(D_errors))
+    pso_v_estimates.append(v_pso)
+    pso_D_estimates.append(D_pso)
 
 
+# GA results
+ga_v_error = [
+    abs(v - v_true)
+    for v in ga_v_estimates
+]
 
-# ======================
+ga_D_error = [
+    abs(D - D_true)
+    for D in ga_D_estimates
+]
+
+
+# PSO results
+pso_v_error = [
+    abs(v - v_true)
+    for v in pso_v_estimates
+]
+
+pso_D_error = [
+    abs(D - D_true)
+    for D in pso_D_estimates
+]
+
+
+# Print results
+print("\n========== GA RESULTS ==========")
+
+print("Mean v:", np.mean(ga_v_estimates))
+print("Mean D:", np.mean(ga_D_estimates))
+
+print("Mean error v:", np.mean(ga_v_error))
+print("Mean error D:", np.mean(ga_D_error))
+
+
+print("\n========== PSO RESULTS ==========")
+
+print("Mean v:", np.mean(pso_v_estimates))
+print("Mean D:", np.mean(pso_D_estimates))
+
+print("Mean error v:", np.mean(pso_v_error))
+print("Mean error D:", np.mean(pso_D_error))
+
+
 # Save results
-# ======================
-np.savetxt("results_v_estimates.txt", v_estimates)
-np.savetxt("results_D_estimates.txt", D_estimates)
 
-np.savetxt("errors_v.txt", v_errors)
-np.savetxt("errors_D.txt", D_errors)
+np.savetxt(
+    "results/ga_v_estimates.txt",
+    ga_v_estimates
+)
 
-print("\n?? Results saved successfully!")
-print("? results_v_estimates.txt")
-print("? results_D_estimates.txt")
-print("? errors_v.txt")
-print("? errors_D.txt")
+np.savetxt(
+    "results/ga_D_estimates.txt",
+    ga_D_estimates
+)
 
-print("\n?? PROGRAM FINISHED SUCCESSFULLY")
+np.savetxt(
+    "results/pso_v_estimates.txt",
+    pso_v_estimates
+)
+
+np.savetxt(
+    "results/pso_D_estimates.txt",
+    pso_D_estimates
+)
+
+np.savetxt(
+    "results/ga_v_errors.txt",
+    ga_v_error
+)
+
+np.savetxt(
+    "results/ga_D_errors.txt",
+    ga_D_error
+)
+
+np.savetxt(
+    "results/pso_v_errors.txt",
+    pso_v_error
+)
+
+np.savetxt(
+    "results/pso_D_errors.txt",
+    pso_D_error
+)
+
+
+print("\nResults saved successfully!")
+
+print("PROGRAM FINISHED")

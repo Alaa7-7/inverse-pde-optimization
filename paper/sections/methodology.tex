@@ -1,14 +1,85 @@
 \section{Methodology}
 
-\subsection{Forward Model}
-The forward problem is solved using a finite difference scheme with explicit time stepping. Spatial derivatives are approximated using upwind and central difference schemes for advection and diffusion terms respectively.
+\subsection{PDE Solver}
 
-\subsection{Inverse Problem Formulation}
-Given noisy observations $u_{obs}$, the goal is to minimize the cost function:
+I solve the one-dimensional advection-diffusion equation using the Finite Difference Method (FDM).
+
+The advection term uses an upwind difference:
 
 \[
-J(v, D) = \| u_{sim}(v, D) - u_{obs} \|_2^2
+advection = -v (u[i] - u[i-1]) / dx
 \]
 
-\subsection{Optimization Method}
-A genetic algorithm is used to solve the inverse optimization problem. The algorithm evolves a population of candidate solutions through selection, crossover, and mutation to minimize the cost function.
+The diffusion term uses a central difference:
+
+\[
+diffusion = D (u[i+1] - 2u[i] + u[i-1]) / dx^2
+\]
+
+The solution is updated using:
+
+\[
+u\_new[i] = u[i] + dt (advection + diffusion)
+\]
+
+The initial condition is a Gaussian pulse:
+
+\[
+u = exp(-100 (x-0.3)^2)
+\]
+
+The grid uses 80 points, with:
+
+\[
+dt = 0.0005
+\]
+
+and:
+
+\[
+Nt = 150
+\]
+
+\subsection{Inverse Problem}
+
+The goal is to find v and D that give a simulated solution close to the observed solution.
+
+The loss function used in the code is:
+
+\[
+J(v,D) = ||u\_sim(v,D) - u\_obs||
+\]
+
+The optimization tries to make this value as small as possible.
+
+\subsection{Genetic Algorithm}
+
+I use a simple Genetic Algorithm (GA).
+
+The initial population contains random values for v and D.
+
+The algorithm selects the best solutions and creates new solutions using:
+
+\begin{itemize}
+    \item selection
+    \item crossover
+    \item mutation
+\end{itemize}
+
+The values are also kept inside the allowed parameter bounds.
+
+\subsection{Particle Swarm Optimization}
+
+I also use Particle Swarm Optimization (PSO).
+
+Each particle has a position and a velocity. The position contains the values of v and D.
+
+The particle updates its velocity using its own best position and the global best position.
+
+The main parameters used are:
+
+\[
+w = 0.7,\quad c1 = 1.5,\quad c2 = 1.5
+\]
+
+PSO is used to search for parameter values with a small loss.
