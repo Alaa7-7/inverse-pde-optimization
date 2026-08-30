@@ -14,7 +14,7 @@ My idea is to find two unknown values:
 ```
 I first create a numerical solution using known values of "v" and "D".
 
-Then I add random noise with a scale of 0.01 to create noisy odserved data to the solution to make the data closer to observed data.
+Then I add random noise with a scale of 0.01 to create noisy observed data to the solution to make the data closer to observed data.
 ```
 After that, I use two optimization methods to find values close to the original values:
 
@@ -194,7 +194,7 @@ The code uses:
 
 u = exp(-100 * (x - 0.3)^2)
 
-I use a Gaussian Function because it gives a simple shape that can move and spread during the simulation.
+I use a simple bell-shaped function because it gives a simple shape that can move and spread during the simulation.
 ```
 
 --------------------------------------------------------------------------------------------------
@@ -228,7 +228,7 @@ I use these values to create the original simulated data.
 ## Noise
 
 ```
-After creating the original solution, I add 1% Gaussian noise:
+After creating the original solution, I add random noise with a scale of 0.01:
 
 u_obs = u_obs + 0.01 * random_noise
 
