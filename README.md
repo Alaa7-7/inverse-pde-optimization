@@ -5,6 +5,7 @@
 In this project, I solve a simple inverse problem using a numerical model.
 
 The model is based on the one-dimensional advection-diffusion equation.
+
 ```
 My idea is to find two unknown values:
 
@@ -13,14 +14,82 @@ My idea is to find two unknown values:
 ```
 I first create a numerical solution using known values of "v" and "D".
 
-Then I add 1% Gaussian noise to the solution to make the data closer to observed data.
+Then I add random noise with a scale of 0.01 to create noisy odserved data to the solution to make the data closer to observed data.
 ```
 After that, I use two optimization methods to find values close to the original values:
 
 - Genetic Algorithm (GA)
 - Particle Swarm Optimization (PSO)
 ```
--------------------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------------------
+
+
+## Inverse Problem
+
+In this project, I use an inverse problem to find unknown values from observed data.
+
+```
+The unknown values are:
+
+- "v": advection velocity
+- "D": diffusion coefficient
+```
+
+First, I use known values of "v" and "D" in the PDE solver to create a solution.
+
+
+```
+Then I add noise to this solution and use it as observed data:
+
+u_obs = u_true + noise
+```
+
+
+After that, I do not give the optimization methods the true values of "v" and "D".
+
+Instead, GA and PSO try different values of "v" and "D".
+
+```
+For each try, the PDE solver creates a new simulated solution:
+
+u_sim = solve_pde(v, D)
+
+Then I compare the simulated solution with the observed data:
+
+J(v,D) = norm(u_sim - u_obs)
+```
+
+If the value of "J" is small, the simulated result is close to the observed data.
+
+The optimization methods continue searching for values that give a small "J".
+
+```
+So, the main idea of the inverse problem in my project is:
+
+Observed data
+      ?
+Try v and D
+      ?
+PDE solver
+      ?
+Simulated data
+      ?
+Calculate error
+      ?
+Find better v and D
+```
+
+
+This is called an inverse problem because I start with the observed result and try to find the unknown parameters that produced a similar result.
+
+I use this approach because the main goal of my project is to estimate "v" and "D" from observed data.
+
+
+-----------------------------------------------------------------------------------------------
+
+
 
 ## Main Equation
 ```
@@ -39,13 +108,19 @@ Here:
 
 I use this equation because it is a simple model for studying transport and diffusion.
 ```
+
+
 -------------------------------------------------------------------------------
+
+
 
 ## Idea
 
 The main goal is to find "v" and "D" from observed data.
 
 The code compares the simulated result with the observed result.
+
+
 ```
 The loss used in the code is:
 
@@ -62,13 +137,17 @@ The optimization methods try to find values of "v" and "D" that give a small los
 
 I use this loss because I need a simple way to compare the simulated solution with the observed data.
 ```
+
 -------------------------------------------------------
+
+
 
 ## Numerical Method
 
 I use the Finite Difference Method (FDM) to solve the equation.
 
 I chose FDM because it is simple to implement and works well for this one-dimensional problem.
+
 ```
 Advection
 
@@ -82,6 +161,8 @@ In the code, the advection part is:
 
 I use the upwind method because it is simple and follows the direction of the transport in the code.
 ```
+
+
 ```
 Diffusion
 
@@ -99,11 +180,15 @@ u_new[i] = u[i] + dt * (advection + diffusion)
 
 I use this simple time update because the project is focused on parameter estimation and not on using a complicated numerical solver.
 ```
+
 ---------------------------------------------------------------------------------------
+
 
 ## Initial Condition
 
 I start the simulation with a Gaussian Funcion.
+
+
 ```
 The code uses:
 
@@ -111,9 +196,13 @@ u = exp(-100 * (x - 0.3)^2)
 
 I use a Gaussian Function because it gives a simple shape that can move and spread during the simulation.
 ```
+
 --------------------------------------------------------------------------------------------------
 
+
 ## Model Setup
+
+
 ```
 The main values used in the program are:
 
@@ -132,9 +221,12 @@ D = 0.05
 
 I use these values to create the original simulated data.
 ```
+
 ----------------------------------------------------------------------------
 
+
 ## Noise
+
 ```
 After creating the original solution, I add 1% Gaussian noise:
 
@@ -144,7 +236,9 @@ I add noise because real observations are usually not exactly equal to the numer
 
 The noise also gives the optimization methods a more realistic test.
 ```
+
 --------------------------------------------------------------------------
+
 
 ## Optimization Methods
 
@@ -155,6 +249,7 @@ I use two methods in the project.
 GA means Genetic Algorithm.
 
 I start with random values for "v" and "D". Then I keep the best solutions and use them to create new solutions.
+
 ```
 The new value is calculated using the two selected parents:
 
@@ -172,6 +267,7 @@ I use this step to create new solutions and search for better values of "v" and 
 
 The code also keeps the values inside fixed limits.
 ```
+
 ```
 I use a small population of possible values for "v" and "D".
 
@@ -192,11 +288,14 @@ For each generation, I:
 
 I chose GA because it is simple and gives me a population-based search.
 ```
+
 -----------------------------------------------------------------------------------------
+
 
 # PSO Method
 
 PSO means Particle Swarm Optimization.
+
 ```
 Each particle has a position and a velocity.
 
@@ -218,6 +317,8 @@ Here:
 - "r1" and "r2" are random values between 0 and 1.
 
 ```
+
+```
 I use particles that contain values for "v" and "D".
 
 Each particle also has a velocity.
@@ -234,9 +335,12 @@ The position is then updated using the velocity.
 
 I use PSO because it gives another simple optimization method to compare with GA.
 ```
+
 --------------------------------------------------------------------------------
 
+
 ## Experiment
+
 ```
 I run the experiment 3 times.
 
@@ -252,11 +356,15 @@ For every run, I:
 I use 3 runs to check if the results are reasonably stable.
 
 Because the optimization methods use random values, the results can be different from one run to another.
+
 ```
+
 ---------------------------------------------------------------------------------------
+
 ## Error Calculation
 
 I calculate the error by comparing the estimated value with the true value.
+
 ```
 For "v", I use:
 
@@ -275,9 +383,10 @@ v_est = 0.7957
 
 then:
 
-v_error = |0.7957 - 0.??
+v_error = |0.7957 - 0.8|
         = 0.0043
 ```
+
 ```
 I calculate the error for each run.
 
@@ -288,8 +397,11 @@ mean_error = sum of errors / number of runs
 In the code, I use "np.mean()" to calculate the mean.
 
 I use the absolute error because it is simple and shows how far the estimated value is from the true value.
+
 ```
+
 ----------------------------------------------------------------------------------------
+
 
 ## Results
 
@@ -299,6 +411,7 @@ The true values are:
 v = 0.8
 D = 0.05
 ```
+
 ```
 GA Results
 
@@ -315,6 +428,7 @@ D error = 0.000261
 These values are close to the true values.
 ```
 
+
 ```
 PSO Results
 
@@ -330,12 +444,14 @@ D error = 0.000365
 
 These values are also close to the true values.
 ```
+
 --------------------------------------------------------------------
 
 
 ## GA and PSO Comparison
 
 I compare GA and PSO using the estimated values and the errors from each method.
+
 ```
 For both methods, I calculate the error using:
 
@@ -350,13 +466,16 @@ mean_error = sum of errors / number of runs
 I use the same noisy data and the same PDE solver for both methods.
 
 This makes the comparison easier because both methods are tested in the same way.
+
 ```
+
 The results are:
 
 - | Method          | Mean v        | Mean D      | Mean v Error          | Mean D Error
   |-----------------|---------------|-------------|-----------------------|--------------
   | GA              | 0.7957        | 0.04993     | 0.01499               | 0.000261
   | PSO             | 0.7977        | 0.04963     | 0.01266               | 0.000365
+
 ```
 From these 3 runs:
 
@@ -368,28 +487,10 @@ From these 3 runs:
 I use the same error calculation for both methods so the comparison is fair.
 
 ```
+
 --------------------------------------------------------------------------------------
 
-## Error Calculation
-```
-For each run, I calculate the error using:
 
-v error = |v_est - v_true|
-
-and:
-
-D error = |D_est - D_true|
-
-Here:
-
-- "v_est" is the estimated velocity.
-- "D_est" is the estimated diffusion coefficient.
-- "v_true" is the original velocity.
-- "D_true" is the original diffusion coefficient.
-
-I use absolute error because it gives a simple value showing how far the estimated parameter is from the true value.
-```
-----------------------------------------------------------
 ```
 Why I Used These Steps
 
@@ -403,10 +504,13 @@ I used the same PDE solver and the same noisy data for both methods so I can mak
 
 I used 3 runs because the optimization methods contain random steps and I want to see if the results stay close to the true values.
 ```
-----------------------------------------------------------------------------
 
-## Project Structure
+-------------------------------------------------------------------------------------------
+
+
 ```
+ Project Structure
+
 inverse-pde-optimization/
 |
 +-- src/
@@ -449,9 +553,12 @@ inverse-pde-optimization/
 +-- .gitignore
 
 ```
-------------------------------------------------------------
+
+------------------------------------------------------------------------
+
 
 ## How to Run
+
 ```
 First, install the required packages:
 
@@ -465,11 +572,15 @@ On Git Bash, the command above should be used from:
 
 /c/project4/inverse-pde-optimization
 
-The program runs the experiments and saves the results in the "results" folder.
+The program runs the experiments and saves the results in the "results" folder
 ```
-----------------------------------------------------------
+
+------------------------------------------------------------------------------
+
 
 ## Applications
+
+
 ```
 This type of model can be useful for:
 
@@ -480,11 +591,12 @@ This type of model can be useful for:
 - Inverse problems in computational physics
 
 This project is a simple educational example of an inverse PDE problem.
+
 ```
----
+
 
 ## Future Work
-
+```
 In the future, I can:
 
 - Run more experiments.
@@ -494,3 +606,4 @@ In the future, I can:
 - Try other optimization methods.
 - Improve the numerical solver.
 - Use machine learning methods for inverse PDE problems
+```
