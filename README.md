@@ -69,15 +69,20 @@ The optimization methods continue searching for values that give a small "J".
 So, the main idea of the inverse problem in my project is:
 
 Observed data
-      ?
+      |
+      v
 Try v and D
-      ?
+      |
+      v
 PDE solver
-      ?
+      |
+      v
 Simulated data
-      ?
+      |
+      v
 Calculate error
-      ?
+      |
+      v
 Find better v and D
 ```
 
